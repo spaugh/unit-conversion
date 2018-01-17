@@ -12,7 +12,7 @@ function convertExpressionToSI(expression) {
 
   // TODO: Add ability to replace with multiple base units
   let newExpression = tokens.map(token => {
-    return isOperator(token) ? token : unitDefinitions.get(token).baseUnits[0].symbol;
+    return isOperator(token) ? token : unitDefinitions.get(token).asBaseUnitString();
   }).join('');
 
   return { conversionFactor, expression: newExpression }
