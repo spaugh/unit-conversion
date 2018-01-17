@@ -1,5 +1,5 @@
 const { unitDefinitions } = require('./definitions');
-const { tokenize, evaluateTokenizedExpression } = require('./expressions');
+const { tokenize, evaluateExpression } = require('./expressions');
 
 function convertExpressionToSI(expression) {
   let tokens = tokenize(expression).map(token => {
@@ -7,15 +7,10 @@ function convertExpressionToSI(expression) {
       return token;
     } else {
       // TODO: Add error checking
-      console.log(unitDefinitions);
-      console.log('looking for ', token);
-      console.log('found ', unitDefinitions.get(token));
-
       return unitDefinitions.get(token);
     }
   });
-  let conversionFactor = evaluateTokenizedExpression(tokens.map(token => {
-    console.log(token);
+  let conversionFactor = evaluateExpression(tokens.map(token => {
     return (typeof token === 'string') ? token : token.conversionFactor;
   }));
 

@@ -1,6 +1,6 @@
 const TOKEN_REGEX = /\(|\)|\*|\/|[^\(\)\*\/\s]+/g
 
-module.exports.tokenize = (expression) => {
+function tokenize(expression) {
   let match;
   let tokens = [];
   while ((match = TOKEN_REGEX.exec(expression)) !== null) {
@@ -9,16 +9,18 @@ module.exports.tokenize = (expression) => {
   return tokens;
 }
 
-module.exports.evaluateTokenizedExpression = (tokens) => {
-  return evaluatePostfix(convertToPostfix(tokens));
+function evaluateExpression(expression) {
+  const tokens = Array.isArray(expression) ? expression : tokenize(expression);
+  const postfix = _convertToPostfix(tokens);
+  return _evaluatePostfix(postfix);
 }
 
 // Based on https://en.wikipedia.org/wiki/Shunting-yard_algorithm
 // Limited to equal precedence operators (i.e., * and /)
-function convertToPostfix(infixTokens) {
+function _convertToPostfix(tokenizedInfixExpression) {
   let output = [];
   let operatorStack = [];
-  for (let token of infixTokens) {
+  for (let token of tokenizedInfixExpression) {
     switch (token) {
       case '(':
         operatorStack.push(token);
@@ -49,10 +51,10 @@ function convertToPostfix(infixTokens) {
 }
 
 // Limited to * and / operators
-function evaluatePostfix(tokens) {
+function _evaluatePostfix(tokenizedPostfixExpression) {
   let stack = [];
   let temp;
-  for (let token of tokens) {
+  for (let token of tokenizedPostfixExpression) {
     switch (token) {
       case '*':
         temp = stack.pop();
@@ -70,6 +72,5 @@ function evaluatePostfix(tokens) {
   return stack[0];
 }
 
-
-//console.log(evaluatePostfix(24, 3, 4, '*', '/'));
-//console.log(convertToPostfix('(degree/(minute*hectare*second))'));
+module.exports.tokenize = tokenize;
+module.exports.evaluateExpression = evaluateExpression;
