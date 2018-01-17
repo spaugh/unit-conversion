@@ -1,3 +1,5 @@
+const { convertToPostfix, evaluatePostfix } = require('./expressions');
+
 class BaseUnit {
   constructor(name, symbol, quantity, alternativeSpellings = []) {
     this.name = name;
@@ -31,6 +33,28 @@ class UnknownQuantity {
   constructor(string) {
     this.string = string;
   }
+  convertToSI() {
+    let postfixExpression = convertToPostfix(this.string);
+    console.log(postfixExpression);
+    postfixExpression = postfixExpression.map(token => {
+      // TODO: Improve the runtime complexity of this find
+      switch (token) {
+        case '/':
+        case '*':
+          return token;
+        default:
+          for (let unit of APPROVED_UNITS.values()) {
+            if (unit.spellings.has(token.trim())) {
+              return unit.conversionFactor;
+            }
+          }
+      }
+    });
+    // replace string tokens with new tokens
+    const conversionFactor = evaluatePostfix(...postfixExpression);
+    console.log('conversion factor is ', conversionFactor);
+    return 'something new';
+  }
 
 }
 
@@ -58,3 +82,7 @@ const APPROVED_UNITS = new Map([
   // NOTE: The use of "second" to denote arcsecond is nonstandard, but it is used in accordance with the challenge prompt 
   new ApprovedUnit('arcsecond', '″', 'angle', 1000.0, [ radian ], ['"', 'second', 'arcsec', 'asec']),
 ].map(unit => [unit.name, unit]));
+
+
+const foo = new UnknownQuantity('(degree/(minute))');
+console.log(foo.convertToSI());

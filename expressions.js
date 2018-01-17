@@ -2,7 +2,7 @@ const TOKEN_REGEX = /\(|\)|\*|\/|[^\(\)\*\/\s]+/g
 
 // Based on https://en.wikipedia.org/wiki/Shunting-yard_algorithm
 // Limited to equal precedence operators (i.e., * and /)
-function convertToPostfix(expression) {
+module.exports.convertToPostfix = (expression) => {
   let match;
   let output = [];
   let operatorStack = [];
@@ -37,4 +37,29 @@ function convertToPostfix(expression) {
   return output;
 }
 
-console.log(convertToPostfix('(degree/(minute*hectare*second))'));
+// Based on http://scriptasylum.com/tutorials/infix_postfix/algorithms/postfix-evaluation/index.htm
+// Limited to * and + operators
+module.exports.evaluatePostfix = (...tokens) => {
+  let stack = [];
+  let temp;
+  for (let token of tokens) {
+    switch (token) {
+      case '*':
+        temp = stack.pop();
+        stack.push(stack.pop() * temp);
+        break;
+      case '/':
+        temp = stack.pop();
+        stack.push(stack.pop() / temp);
+        break;
+      default:
+        stack.push(token);
+        break;
+    }
+  }
+  return stack[0];
+}
+
+
+//console.log(evaluatePostfix(24, 3, 4, '*', '/'));
+//console.log(convertToPostfix('(degree/(minute*hectare*second))'));
