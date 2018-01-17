@@ -9,9 +9,13 @@ module.exports.tokenize = (expression) => {
   return tokens;
 }
 
+module.exports.evaluateTokenizedExpression = (tokens) => {
+  return evaluatePostfix(convertToPostfix(tokens));
+}
+
 // Based on https://en.wikipedia.org/wiki/Shunting-yard_algorithm
 // Limited to equal precedence operators (i.e., * and /)
-module.exports.convertToPostfix = (infixTokens) => {
+function convertToPostfix(infixTokens) {
   let output = [];
   let operatorStack = [];
   for (let token of infixTokens) {
@@ -44,9 +48,8 @@ module.exports.convertToPostfix = (infixTokens) => {
   return output;
 }
 
-// Based on http://scriptasylum.com/tutorials/infix_postfix/algorithms/postfix-evaluation/index.htm
-// Limited to * and + operators
-module.exports.evaluatePostfix = (...tokens) => {
+// Limited to * and / operators
+function evaluatePostfix(tokens) {
   let stack = [];
   let temp;
   for (let token of tokens) {

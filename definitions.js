@@ -1,67 +1,5 @@
-const { tokenize, convertToPostfix, evaluatePostfix } = require('./expressions');
-
-class BaseUnit {
-  constructor(name, symbol, quantity, alternativeSpellings = []) {
-    this.name = name;
-    this.quantity = quantity;
-    this.symbol = symbol;
-    
-    this.spellings = new Set(alternativeSpellings);
-    this.spellings.add(symbol);
-    this.spellings.add(name);
-  }
-  toThe(exponent) {
-    return Object.assign({ exponent }, this);
-  }
-}
-
-class ApprovedUnit {
-  constructor(name, symbol, quantity, conversionFactor, baseUnits, alternativeSpellings = []) {
-    this.name = name;
-    this.symbol = symbol;
-    this.quantity = quantity;
-    this.baseUnits = baseUnits;
-    this.conversionFactor = conversionFactor;
-    
-    this.spellings = new Set(alternativeSpellings);
-    this.spellings.add(symbol);
-    this.spellings.add(name);
-  }
-}
-
-class UnknownQuantity {
-  constructor(string) {
-    this.string = string;
-  }
-  convertToSI() {
-    let tokens = tokenize(this.string);
-    tokens = tokens.map(token => {
-      // TODO: Improve the runtime complexity of this find
-      switch (token) {
-        case '/':
-        case '*':
-        case '(':
-        case ')':
-          return token;
-        default:
-          for (let unit of APPROVED_UNITS.values()) {
-            if (unit.spellings.has(token.trim())) {
-              return unit;
-            }
-          }
-      }
-    });
-    console.log(tokens);
-    console.log('conversion factor tokens');
-    console.log(tokens.map(t => typeof t === 'string' ? t : t.conversionFactor));
-    let postfix = convertToPostfix(tokens.map(t => typeof t === 'string' ? t : t.conversionFactor)); 
-    console.log(postfix)
-    let conversionFactor = evaluatePostfix(...postfix);
-    let newExpression = tokens.map(t => typeof t === 'string' ? t : t.baseUnits[0].symbol).join(''); 
-    return { conversionFactor, newExpression }
-  }
-
-}
+const { BaseUnit, ApprovedUnit } = require('./types'); 
+const { buildMap } = require('./utils');
 
 // Base Units, per https://en.wikipedia.org/wiki/SI_base_unit 
 // Limited to those specifically listed in the challenge prompt.
@@ -71,11 +9,11 @@ const meter = new BaseUnit('meter', 'm', 'length');
 const kilogram = new BaseUnit('kilogram', 'kg', 'mass');
 const second = new BaseUnit('second', 's', 'time', ['sec']);
 const radian = new BaseUnit('radian', 'rad', 'angle');
-const BASE_UNITS = new Map([ meter, kilogram, second, radian ].map(unit => [unit.name, unit]));
+const BASE_UNITS = [ meter, kilogram, second, radian ];
 
 // Non-SI units accepted for SI usage, per https://en.wikipedia.org/wiki/Non-SI_units_mentioned_in_the_SI
 // Limited to those specifically listed in the challenge prompt.
-const APPROVED_UNITS = new Map([
+const APPROVED_UNITS = [
   new ApprovedUnit('minute', 'min', 'time', 60.0, [ second ]),
   new ApprovedUnit('hour', 'h', 'time', 60.0 * 60.0, [ second ], ['hr']),
   new ApprovedUnit('day', 'd', 'time', 60.0 * 60.0 * 24.0, [ second ]),
@@ -86,8 +24,8 @@ const APPROVED_UNITS = new Map([
   new ApprovedUnit('arcminute', '′', 'angle', 1000.0, [ radian ], ['\'', 'arcmin', 'amin']),
   // NOTE: The use of "second" to denote arcsecond is nonstandard, but it is used in accordance with the challenge prompt 
   new ApprovedUnit('arcsecond', '″', 'angle', 1000.0, [ radian ], ['"', 'second', 'arcsec', 'asec']),
-].map(unit => [unit.name, unit]));
+]
 
-
-const foo = new UnknownQuantity('(degree/(minute))');
-console.log(foo.convertToSI());
+const keyFn = (unit) => Array.from(unit.spellings);
+// We want approved units to override base units, especially for the arcsecond/second case
+module.exports.unitDefinitions = buildMap(BASE_UNITS.concat(APPROVED_UNITS), keyFn);
