@@ -1,0 +1,18 @@
+{
+  "name": "citrine-frontend-challenge",
+  "version": "0.0.1",
+  "description": "Challenge question for Citrine Informatics frontend role",
+  "main": "index.js",
+  "repository": "git@github.com:andrewmillspaugh/citrine-frontend-challenge.git",
+  "author": "Andrew Millspaugh <millspaugh.andrew@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "koa": "^2.4.1",
+    "koa-logger": "^3.1.0",
+    "koa-router": "^7.3.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest"
+  }
+}
