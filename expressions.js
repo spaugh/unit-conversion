@@ -1,18 +1,35 @@
-const TOKEN_REGEX = /\(|\)|\*|\/|[^\(\)\*\/\s]+/g
+const { LeftBracketToken, RightBracketToken, OperatorToken, UnitToken, NumberToken } = require('./token');
+
+// No named RegExp capture groups in JavaScript...*sigh*
+const TOKEN_REGEX = /(\()|(\))|(\*)|(\/)|(^[+-]?\d+(\.\d+))|([^\(\)\*\/\s]+)/g
 
 function tokenize(expression) {
-  let match;
   let tokens = [];
+  let match;
   while ((match = TOKEN_REGEX.exec(expression)) !== null) {
-    tokens.push(match[0]); 
+    let index = match.slice(1).findIndex((el) => !!el);
+    if (index === 0) {
+      tokens.push(new LeftBracketToken(match[index + 1]));
+    } else if (index === 1) {
+      tokens.push(new RightBracketToken(match[index + 1]));
+    } else if (index <= 3) {
+      tokens.push(new OperatorToken(match[index + 1]));
+    } else if (index === 4) {
+      tokens.push(new NumberToken(match[index + 1]));
+    } else {
+      tokens.push(new UnitToken(match[index + 1]));
+    }
   }
   return tokens;
 }
 
-function evaluateExpression(expression) {
-  const tokens = Array.isArray(expression) ? expression : tokenize(expression);
-  const postfix = _convertToPostfix(tokens);
+function evaluateTokenizedExpression(tokenizedInfixExpression) {
+  const postfix = _convertToPostfix(tokenizedInfixExpression);
   return _evaluatePostfix(postfix);
+}
+
+const _stackContainsValidOperators = (stack) => {
+  return stack.length && !(stack[stack.length - 1] instanceof LeftBracketToken);
 }
 
 // Based on https://en.wikipedia.org/wiki/Shunting-yard_algorithm
@@ -21,31 +38,31 @@ function _convertToPostfix(tokenizedInfixExpression) {
   let output = [];
   let operatorStack = [];
   for (let token of tokenizedInfixExpression) {
-    switch (token) {
-      case '(':
-        operatorStack.push(token);
-        break;
-      case ')':
-        // TODO: Catch unbalanced parens
-        while (operatorStack.length && operatorStack[operatorStack.length - 1] != '(') {
-          output.push(operatorStack.pop());
-        }
-        operatorStack.pop();
-        break;
-      case '/':
-      case '*':
-        while (operatorStack.length && operatorStack[operatorStack.length - 1] != '(') {
-          output.push(operatorStack.pop());
-        }
-        operatorStack.push(token);
-        break;
-      default: // If it's a number or unit
-        output.push(token); 
-        break;
+    if (token instanceof LeftBracketToken) {
+      operatorStack.push(token);
+    } else if (token instanceof RightBracketToken) {
+      while (_stackContainsValidOperators(operatorStack)) {
+        output.push(operatorStack.pop());
+      }
+      let removed = operatorStack.pop();
+      if (!(removed instanceof LeftBracketToken)) {
+        throw new Error('Unbalanced parentheses!');
+      }
+    } else if (token instanceof OperatorToken) {
+      while (_stackContainsValidOperators(operatorStack)) {
+        output.push(operatorStack.pop());
+      }
+      operatorStack.push(token);
+    } else {
+      output.push(token);
     }
   }
   while (operatorStack.length) {
-    output.push(operatorStack.pop());
+    let operator = operatorStack.pop();
+    if (operator instanceof LeftBracketToken || operator instanceof RightBracketToken) {
+      throw new Error('Unbalanced parentheses!');
+    }
+    output.push(operator);
   }
   return output;
 }
@@ -55,22 +72,15 @@ function _evaluatePostfix(tokenizedPostfixExpression) {
   let stack = [];
   let temp;
   for (let token of tokenizedPostfixExpression) {
-    switch (token) {
-      case '*':
-        temp = stack.pop();
-        stack.push(stack.pop() * temp);
-        break;
-      case '/':
-        temp = stack.pop();
-        stack.push(stack.pop() / temp);
-        break;
-      default:
-        stack.push(token);
-        break;
+    if (token instanceof OperatorToken) {
+      temp = stack.pop();
+      stack.push(new NumberToken(token.execute(stack.pop(), temp)));
+    } else {
+      stack.push(token);
     }
   }
-  return stack[0];
+  return stack[0].value;
 }
 
 module.exports.tokenize = tokenize;
-module.exports.evaluateExpression = evaluateExpression;
+module.exports.evaluateTokenizedExpression = evaluateTokenizedExpression;

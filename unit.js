@@ -1,6 +1,6 @@
 WORD_REGEX = /[a-zA-Z]+[^s]/;
 
-class Unit { 
+class Unit {
   constructor(name, symbol, quantity, alternativeSpellings = []) {
     this.name = name;
     this.quantity = quantity;
@@ -32,5 +32,4 @@ class ApprovedUnit extends Unit {
   }
 }
 
-module.exports.BaseUnit = BaseUnit;
-module.exports.ApprovedUnit = ApprovedUnit;
+module.exports = { BaseUnit, ApprovedUnit }

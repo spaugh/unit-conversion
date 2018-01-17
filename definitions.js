@@ -1,9 +1,9 @@
-const { BaseUnit, ApprovedUnit } = require('./types'); 
+const { BaseUnit, ApprovedUnit } = require('./unit');
 const { buildMap } = require('./utils');
 
-// Base Units, per https://en.wikipedia.org/wiki/SI_base_unit 
+// Base Units, per https://en.wikipedia.org/wiki/SI_base_unit
 // Limited to those specifically listed in the challenge prompt.
-// Additionally, for simplicity, the radian unit is treated as 
+// Additionally, for simplicity, the radian unit is treated as
 // a base unit, despite actually being an SI derived unit of m/m
 const meter = new BaseUnit('meter', 'm', 'length');
 const kilogram = new BaseUnit('kilogram', 'kg', 'mass');
@@ -22,7 +22,7 @@ const APPROVED_UNITS = [
   new ApprovedUnit('tonne', 't', 'mass', 1000.0, [ kilogram ], ['metric ton']),
   new ApprovedUnit('degree', '°', 'angle', Math.PI / 180.0, [ radian ], ['deg']),
   new ApprovedUnit('arcminute', '′', 'angle', 1000.0, [ radian ], ['\'', 'arcmin', 'amin']),
-  // NOTE: The use of "second" to denote arcsecond is nonstandard, but it is used in accordance with the challenge prompt 
+  // NOTE: The use of "second" to denote arcsecond is nonstandard, but it is used in accordance with the challenge prompt
   new ApprovedUnit('arcsecond', '″', 'angle', 1000.0, [ radian ], ['"', 'second', 'arcsec', 'asec']),
 ]
 

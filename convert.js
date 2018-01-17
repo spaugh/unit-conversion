@@ -1,23 +1,15 @@
 const { unitDefinitions } = require('./definitions');
-const { tokenize, evaluateExpression } = require('./expressions');
+const { tokenize, evaluateTokenizedExpression } = require('./expressions');
 
 const isOperator = (string) => ['*', '/', '(', ')'].includes(string);
 
 function convertExpressionToSI(expression) {
   let tokens = tokenize(expression);
-  
-  let conversionFactor = evaluateExpression(tokens.map(token => {
-    return isOperator(token) ? token : unitDefinitions.get(token).conversionFactor;
-  }));
-
-  // TODO: Add ability to replace with multiple base units
-  let newExpression = tokens.map(token => {
-    return isOperator(token) ? token : unitDefinitions.get(token).asBaseUnitString();
-  }).join('');
-
+  let conversionFactor = evaluateTokenizedExpression(tokens).toPrecision(14);
+  let newExpression = tokens.map(token => token.asString()).join('');
   return { conversionFactor, expression: newExpression }
 }
 
-console.log(convertExpressionToSI('((hectares*minutes)/((seconds*hours))'));
+console.log(convertExpressionToSI('degree/minute'));
 
 module.exports.convertExpressionToSI = convertExpressionToSI;
