@@ -1,13 +1,20 @@
 const TOKEN_REGEX = /\(|\)|\*|\/|[^\(\)\*\/\s]+/g
 
+module.exports.tokenize = (expression) => {
+  let match;
+  let tokens = [];
+  while ((match = TOKEN_REGEX.exec(expression)) !== null) {
+    tokens.push(match[0]); 
+  }
+  return tokens;
+}
+
 // Based on https://en.wikipedia.org/wiki/Shunting-yard_algorithm
 // Limited to equal precedence operators (i.e., * and /)
-module.exports.convertToPostfix = (expression) => {
-  let match;
+module.exports.convertToPostfix = (infixTokens) => {
   let output = [];
   let operatorStack = [];
-  while ((match = TOKEN_REGEX.exec(expression)) !== null) {
-    let token = match[0].trim();
+  for (let token of infixTokens) {
     switch (token) {
       case '(':
         operatorStack.push(token);

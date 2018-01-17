@@ -1,4 +1,4 @@
-const { convertToPostfix, evaluatePostfix } = require('./expressions');
+const { tokenize, convertToPostfix, evaluatePostfix } = require('./expressions');
 
 class BaseUnit {
   constructor(name, symbol, quantity, alternativeSpellings = []) {
@@ -34,26 +34,31 @@ class UnknownQuantity {
     this.string = string;
   }
   convertToSI() {
-    let postfixExpression = convertToPostfix(this.string);
-    console.log(postfixExpression);
-    postfixExpression = postfixExpression.map(token => {
+    let tokens = tokenize(this.string);
+    tokens = tokens.map(token => {
       // TODO: Improve the runtime complexity of this find
       switch (token) {
         case '/':
         case '*':
+        case '(':
+        case ')':
           return token;
         default:
           for (let unit of APPROVED_UNITS.values()) {
             if (unit.spellings.has(token.trim())) {
-              return unit.conversionFactor;
+              return unit;
             }
           }
       }
     });
-    // replace string tokens with new tokens
-    const conversionFactor = evaluatePostfix(...postfixExpression);
-    console.log('conversion factor is ', conversionFactor);
-    return 'something new';
+    console.log(tokens);
+    console.log('conversion factor tokens');
+    console.log(tokens.map(t => typeof t === 'string' ? t : t.conversionFactor));
+    let postfix = convertToPostfix(tokens.map(t => typeof t === 'string' ? t : t.conversionFactor)); 
+    console.log(postfix)
+    let conversionFactor = evaluatePostfix(...postfix);
+    let newExpression = tokens.map(t => typeof t === 'string' ? t : t.baseUnits[0].symbol).join(''); 
+    return { conversionFactor, newExpression }
   }
 
 }
