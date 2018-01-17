@@ -10,6 +10,4 @@ function convertExpressionToSI(expression) {
   return { conversionFactor, expression: newExpression }
 }
 
-console.log(convertExpressionToSI('degree/minute'));
-
 module.exports.convertExpressionToSI = convertExpressionToSI;

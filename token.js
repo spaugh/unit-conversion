@@ -34,7 +34,7 @@ class OperatorToken extends Token {
 }
 // NOTE: These values of precedence only matter in relative terms.
 // Any valid precedence table can be used. As the challenge only
-// requires multiplication and division, these values are currently
+// requires multiplication and division, precedence values are
 // unused, but provided with the intention of making this codebase
 // easily extensible.
 OperatorToken.types = {

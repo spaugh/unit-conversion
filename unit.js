@@ -15,7 +15,7 @@ class Unit {
     }
   }
   asString() {
-    return this.name;
+    return this.symbol;
   }
 }
 
