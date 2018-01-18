@@ -26,12 +26,16 @@ async function handleErrors(ctx, next) {
 }
 
 async function convert(ctx) {
-  ctx.assert(ctx.query.units, 400, JSON.stringify({ error: 'Must provide unit query string!' }));
-  const { expression, conversionFactor } = convertToSI(ctx.query.units);
-  ctx.body = JSON.stringify({
-    unit_name: expression,
-    multiplication_factor: parseFloat(conversionFactor.toPrecision(14)),
-  });
+  if (!!ctx.query.units) {
+    const { expression, conversionFactor } = convertToSI(ctx.query.units);
+    ctx.body = JSON.stringify({
+      unit_name: expression,
+      multiplication_factor: parseFloat(conversionFactor.toPrecision(14)),
+    });
+  } else {
+    ctx.status = 400;
+    ctx.body = JSON.stringify({ error: 'Must provide units query string!' });
+  }
 }
 
 router.get('/units/si', convert);

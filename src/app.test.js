@@ -13,6 +13,41 @@ test('unit conversion route', async () => {
   });
 });
 
+test('missing unit query string', async () => {
+  const response = await request(server).get('/units/si');
+  expect(response.status).toEqual(400);
+  expect(response.type).toEqual('application/json');
+  console.log(response.body);
+  expect(response.body).toEqual({
+    error: expect.stringMatching(new RegExp('provide units query string', 'i'))
+  });
+});
+
+test('nonsense in query string', async () => {
+  const response = await request(server).get('/units/si?units=klnlk2*(&*(2lsdkl228883jjjnJJJJFF^^');
+  expect(response.status).toEqual(400);
+  expect(response.type).toEqual('application/json');
+  console.log(response.body);
+  expect(response.body).toEqual({
+    error: expect.stringMatching(new RegExp('unsupported unit', 'i'))
+  });
+});
+
+test('misspelled query string', async () => {
+  const response = await request(server).get('/units/si?untsi=meters/s');
+  expect(response.status).toEqual(400);
+  expect(response.type).toEqual('application/json');
+  console.log(response.body);
+  expect(response.body).toEqual({
+    error: expect.stringMatching(new RegExp('provide units query string', 'i'))
+  });
+});
+
+test('wrong url', async () => {
+  const response = await request(server).get('/units');
+  expect(response.status).toEqual(404);
+});
+
 test('unsupported unit', async () => {
   const response = await request(server).get('/units/si?units=gloop/minute');
   expect(response.status).toEqual(400);
@@ -62,12 +97,15 @@ test('precision for complex conversion', async () => {
 });
 
 test('many requests', async () => {
-  const responses = [];
-  [...Array(500)].forEach(async () => {
-    const response = await request(server).get('/units/si?units=degree/minute');
-    responses.push(response);
-  });
+  const count = 100;
+  const responses = await Promise.race([
+    new Promise(resolve => setTimeout(() => resolve([]), 10 * count)),
+    Promise.all([...Array(count)].map(async () => {
+      return await request(server).get('/units/si?units=degree/minute');
+    }))
+  ])
+  expect(responses).toHaveLength(count);
   for (const response of responses) {
-    expect(response.status).toEqual(200);
+    expect(response.status).toBe(200);
   }
 });
