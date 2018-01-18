@@ -1,6 +1,8 @@
 const Decimal = require('decimal.js');
 const { PrecisionError } = require('./errors');
 
+const PRECISION_BUFFER = 5;
+
 function buildMap(list, keyFn) {
   const newMap = new Map();
   for (const item of list) {
@@ -15,7 +17,8 @@ function buildMap(list, keyFn) {
 }
 
 function setPrecision() {
-  const precision = parseInt(process.env.PRECISION || Decimal.precision);
+  let precision = parseInt(process.env.PRECISION, 10);
+  precision = isNaN(precision) ? Decimal.precision : precision + PRECISION_BUFFER;
   if (precision <= 1000) {
     Decimal.set({ precision });
   } else {

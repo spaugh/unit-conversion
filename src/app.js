@@ -5,9 +5,11 @@ const Logger = require('koa-logger');
 const { convertToSI, errors } = require('./expressions');
 
 const MAX_FLOAT_PRECISION = 15;
+const DEFAULT_PRECISION = MAX_FLOAT_PRECISION;
 
 const formatNumber = (number) => {
-  const precision = parseInt(process.env.PRECISION || 20);
+  let precision = parseInt(process.env.PRECISION, 10);
+  precision = isNaN(precision) ? DEFAULT_PRECISION : precision;
   if (precision > MAX_FLOAT_PRECISION) {
     return number.toPrecision(precision);
   } else {
