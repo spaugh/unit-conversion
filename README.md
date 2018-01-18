@@ -4,8 +4,8 @@
 ```bash
 $ cd citrine-frontend-challenge
 $ docker build -t arm-citrine .
-$ docker run -p 8080:8080 -it arm-citrine
-$ curl -w '\n' 'localhost:8080/units/si?units=((tonnes)/(litre*day))'
+$ docker run -p 8080:8080 -it --rm arm-citrine
+$ curl -w '\n' 'localhost:8080/units/si?units=((tonnes)/(litre*day))' # in another bash session:
 {"unit_name":"((kg)/(m*m*m*s))","multiplication_factor":11.574074074074}
 ```
 
@@ -61,7 +61,7 @@ The library chosen, Koa, comes as a rewrite of the extremely popular express pac
 
 #### Testing
 
-Jest was used. For the API server, supertest was used.
+Jest was used. For the API, supertest was used.
 
 ## Next Steps
 
@@ -70,3 +70,4 @@ Jest was used. For the API server, supertest was used.
 - Add more units
 - Extend conversion abilities
 - Add expression simplification
+- Improving utilities for setting precision
