@@ -1,12 +1,12 @@
 const Decimal = require('decimal.js');
 
-const PRECISION = process.env.MAX_PRECISION || 40;
+const PRECISION = parseInt(process.env.MAX_PRECISION || 40);
 if (PRECISION > 1000) {
   throw new Error('Precision can not exceed 1000 without improving precision of Pi!');
 }
 Decimal.set({ precision: PRECISION })
 
-const { BaseUnit, ApprovedUnit } = require('./unit');
+const { BaseUnit, ApprovedUnit } = require('./units');
 const { buildMap } = require('./utils');
 
 const Pi = Decimal.acos(-1); // Allows precision up to 1000 digits
@@ -38,4 +38,4 @@ const APPROVED_UNITS = [
 
 const keyFn = (unit) => Array.from(unit.spellings);
 // We want approved units to override base units, especially for the arcsecond/second case
-module.exports.unitDefinitions = buildMap(BASE_UNITS.concat(APPROVED_UNITS), keyFn);
+module.exports = { APPROVED_UNITS, BASE_UNITS, unitDefinitions: buildMap(BASE_UNITS.concat(APPROVED_UNITS), keyFn) }

@@ -13,8 +13,8 @@
     "koa-router": "^7.3.0"
   },
   "scripts": {
-    "start": "node src/app.js",
-    "test": "jest"
+    "start": "MAX_PRECISION=40 node src/app.js",
+    "test": "MAX_PRECISION=40 jest"
   },
   "devDependencies": {
     "jest": "^22.1.2"

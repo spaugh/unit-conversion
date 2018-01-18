@@ -9,7 +9,7 @@ class Token {
     }
     this.value = string;
   }
-  asString() {
+  toString() {
     return this.value;
   }
 }
@@ -25,11 +25,8 @@ class OperatorToken extends Token {
     this.associativity = associativity;
     this._execute = execute;
   }
-  asNumber() {
-    throw new Error('Operator has no conversion to number!');
-  }
   execute(left, right) {
-    return this._execute(left.asNumber(), right.asNumber());
+    return this._execute(left.toNumber(), right.toNumber());
   }
 }
 // NOTE: These values of precedence only matter in relative terms.
@@ -42,9 +39,16 @@ OperatorToken.types = {
   '/': { precedence: 3, associativity: 'left', execute: (left, right) => left.dividedBy(right) },
 }
 
-class LeftBracketToken extends Token {}
-
-class RightBracketToken extends Token {}
+class LeftBracketToken extends Token {
+  constructor() {
+    super('(');
+  }
+} 
+class RightBracketToken extends Token {
+  constructor() {
+    super(')');
+  }
+}
 
 class UnitToken extends Token {
   constructor(string) {
@@ -54,11 +58,11 @@ class UnitToken extends Token {
       throw new Error(`Unknown unit type ${string}`);
     }
   }
-  asNumber() {
+  toNumber() {
     return this.value.conversionFactor;
   }
-  asString() {
-    return this.value.asBaseUnitString();
+  toString() {
+    return this.value.symbol;
   }
 }
 
@@ -67,10 +71,10 @@ class NumberToken extends Token {
     super(string);
     this.value = new Decimal(string);
   }
-  asNumber() {
+  toNumber() {
     return this.value;
   }
-  asString() {
+  toString() {
     return this.value.toString();
   }
 }
