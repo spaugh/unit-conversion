@@ -77,7 +77,7 @@ function _evaluatePostfix(tokens) {
   if (stack.length !== 1) {
     throw new InvalidExpression();
   }
-  return stack[0].value;
+  return stack[0].toNumber();
 }
 
 function _hasGroupedOperator(ops) {

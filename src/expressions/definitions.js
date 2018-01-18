@@ -27,9 +27,9 @@ const APPROVED_UNITS = [
   new ApprovedUnit('hectare', 'ha', 'area', new Decimal(10000), [ meter, meter ]),
   new ApprovedUnit('tonne', 't', 'mass', new Decimal(1000), [ kilogram ], ['metric ton']),
   new ApprovedUnit('degree', '°', 'angle', Pi.dividedBy(180), [ radian ], ['deg']),
-  new ApprovedUnit('arcminute', '′', 'angle', Pi.dividedBy(10800), [ radian ], ['\'', 'arcmin', 'amin']), // eslint-disable-line max-len
+  new ApprovedUnit('arcminute', '′', 'angle', Pi.dividedBy(10800), [ radian ], ['\'', '‘', 'arcmin', 'amin']), // eslint-disable-line max-len
   // NOTE: The use of "second" to denote arcsecond is nonstandard, but it is used in accordance with the challenge prompt
-  new ApprovedUnit('arcsecond', '″', 'angle', Pi.dividedBy(648000), [ radian ], ['"', 'second', 'arcsec', 'asec']), // eslint-disable-line max-len
+  new ApprovedUnit('arcsecond', '″', 'angle', Pi.dividedBy(648000), [ radian ], ['"', '“', 'second', 'arcsec', 'asec']), // eslint-disable-line max-len
 ];
 
 const getSpellings = (unit) => Array.from(unit.spellings);
