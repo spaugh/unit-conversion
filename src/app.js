@@ -2,30 +2,42 @@ const Koa = require('koa');
 const Router = require('koa-router');
 const Logger = require('koa-logger');
 
-const { convertToSI } = require('./expressions');
+const { convertToSI, errors } = require('./expressions');
 
 const app = new Koa();
 const router = new Router();
 
-async function responseTime(ctx, next) {
-  const start = Date.now();
-  await next();
-  const ms = Date.now() - start;
-  ctx.set('X-Response-Time', `${ms}ms`);
+async function errorHandling(ctx, next) {
+  try {
+    await next();
+  } catch (err) {
+    if (err instanceof errors.ExtendableError) {
+      ctx.status = err.internal ? 500 : 400;
+      ctx.body = err.internal ? err.message : 'Internal Server Error';
+    } else {
+      ctx.status = 500;
+      ctx.body = 'Internal Server Error';
+    }
+    ctx.app.emit('error', err, ctx);
+  }
 }
 
-router.get('/units/si', (ctx, next) => { 
+async function convert(ctx) {
   let { expression, conversionFactor } = convertToSI(ctx.query.units);
   ctx.body = JSON.stringify({
-    expression: expression,
-    multiplication_factor: conversionFactor.toPrecision(14),
+    unit_name: expression,
+    multiplication_factor: parseFloat(conversionFactor.toPrecision(14)),
   });
   ctx.set('Content-Type', 'application/json');
-})
+}
 
-app
-  .use(Logger())
-  .use(responseTime)
-  .use(router.routes())
-  .use(router.allowedMethods());
-app.listen(3000);
+router.get('/units/si', convert);
+
+app.use(Logger());
+app.use(errorHandling);
+app.use(router.routes());
+app.use(router.allowedMethods());
+
+let server = app.listen(process.env.PORT || 3000);
+
+module.exports = server;

@@ -18,6 +18,7 @@
     "test": "MAX_PRECISION=40 jest"
   },
   "devDependencies": {
-    "jest": "^22.1.2"
+    "jest": "^22.1.2",
+    "supertest": "^3.0.0"
   }
 }
