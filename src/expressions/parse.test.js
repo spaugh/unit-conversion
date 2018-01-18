@@ -1,4 +1,5 @@
 const parse = require('./parse');
+const errors = require('./errors');
 const TokenTypes = require('./tokens');
 
 test('parse simple expression', () => {
@@ -72,18 +73,19 @@ test('parse complex unit expression', () => {
 
 // This block of "unsupported" tests include functionality that could be later supported
 test('parse expression with unsupported "-" operator', () => {
-  expect(() => parse('1 - 2')).toThrow();
+  expect(() => parse('1 - 2')).toThrow(errors.UnsupportedOperator);
 });
 
 test('parse expression with unsupported "+" operator', () => {
-  expect(() => parse('1 + 2')).toThrow();
+  expect(() => parse('hectare+second')).toThrow(errors.UnsupportedOperator);
 });
 
 test('parse expression with unsupported "^" operator', () => {
-  expect(() => parse('1 ^ 2')).toThrow();
+  expect(() => parse('1 ^ 2')).toThrow(errors.UnsupportedOperator);
 });
 
 test('parse expression with unknown variables', () => {
-  expect(() => parse('x + y')).toThrow();
+  expect(() => parse('x + y')).toThrow(errors.UnsupportedUnit);
 });
+
 

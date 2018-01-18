@@ -19,7 +19,9 @@ async function handleErrors(ctx, next) {
     const userError = (err instanceof errors.ExtendableError)
     ctx.status = userError ? 400 : 500;
     ctx.body = JSON.stringify({ error: userError ? err.message : 'Internal Server Error' });
-    ctx.app.emit('error', err, ctx);
+    if (!userError) {
+      ctx.app.emit('error', err, ctx);
+    }
   }
 }
 
@@ -42,4 +44,4 @@ app.use(router.allowedMethods());
 
 let server = app.listen(process.env.PORT || 3000);
 
-module.exports = server;
+module.exports = { app, server };

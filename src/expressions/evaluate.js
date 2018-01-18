@@ -1,7 +1,7 @@
 require('./utils').setPrecision();
 
 const TokenTypes = require('./tokens');
-const { UnbalancedParentheses } = require('./errors');
+const { UnbalancedParentheses, InvalidExpression } = require('./errors');
 
 function evaluate(tokenizedInfixExpression) {
   const postfix = _convertToPostfix(tokenizedInfixExpression);
@@ -58,6 +58,9 @@ function _evaluatePostfix(tokenizedPostfixExpression) {
     } else {
       stack.push(token);
     }
+  }
+  if (stack.length !== 1) {
+    throw new InvalidExpression();
   }
   return stack[0].value;
 }
