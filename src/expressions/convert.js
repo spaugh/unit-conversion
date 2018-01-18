@@ -6,6 +6,12 @@ const evaluate = require('./evaluate');
 const { ApprovedUnit } = require('./units');
 const { OperatorToken, UnitToken } = require('./tokens');
 
+/**
+ * _convertTokenToSI
+ *
+ * @param {Token} token
+ * @returns {Token[]}
+ */
 function _convertTokenToSI(token) {
   const newTokens = [];
   token.value.baseUnits.forEach(unit => {
@@ -15,9 +21,15 @@ function _convertTokenToSI(token) {
   return newTokens.slice(0, -1);
 }
 
+/**
+ * convertToSI
+ *
+ * @param {String} expression - Mathematical expression, e.g. (2*3)/4
+ * @return {{expression: String, conversionFactor: Decimal}}
+ */
 function convertToSI(expression) {
   const tokens = parse(expression);
-  const conversionFactor = evaluate(tokens); 
+  const conversionFactor = evaluate(tokens);
   expression = tokens.map(token => {
     if (token.value instanceof ApprovedUnit) {
       return _convertTokenToSI(token);

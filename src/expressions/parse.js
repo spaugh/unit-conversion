@@ -4,6 +4,12 @@ const { UnsupportedOperator } = require('./errors');
 // No named RegExp capture groups in JavaScript...*sigh*
 const TOKEN_REGEX = /(\()|(\))|(\*)|(\/)|(\+)|(-)|(\^)|(\d+(?:\.\d+)?)|([^()*/+-^\s]+)/g;
 
+/**
+ * parse
+ *
+ * @param {String} expression - Mathematical expression with only *,/,(,) operators, e.g. (2*3/4)
+ * @returns {Token[]} - Tokenized version of expression
+ */
 function parse(expression) {
   TOKEN_REGEX.lastIndex = 0; // Reset state of regex so that we don't have to reinstantiate
   const tokens = [];
@@ -27,4 +33,4 @@ function parse(expression) {
   return tokens;
 }
 
-module.exports = parse; 
+module.exports = parse;

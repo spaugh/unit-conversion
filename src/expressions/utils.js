@@ -3,6 +3,14 @@ const { PrecisionError } = require('./errors');
 
 const PRECISION_BUFFER = 5;
 
+/**
+ * buildMap
+ * Turns a list into a map by using values in the list as keys. Useful for inverting hashtables.
+ *
+ * @param {Array} list
+ * @param {Function} keyFn
+ * @returns {Map}
+ */
 function buildMap(list, keyFn) {
   const newMap = new Map();
   for (const item of list) {

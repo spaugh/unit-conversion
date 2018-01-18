@@ -9,7 +9,7 @@ class Unit {
     this.name = name;
     this.quantity = quantity;
     this.symbol = symbol;
-    this.conversionFactor = new Decimal(1.0); 
+    this.conversionFactor = new Decimal(1.0);
 
     this.spellings = new Set();
     for (const spelling of alternativeSpellings.concat([ name, symbol ])) {
@@ -24,8 +24,7 @@ class Unit {
   }
 }
 
-class BaseUnit extends Unit {
-}
+class BaseUnit extends Unit { }
 
 class ApprovedUnit extends Unit {
   constructor(name, symbol, quantity, conversionFactor, baseUnits, alternativeSpellings = []) {

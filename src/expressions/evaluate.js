@@ -3,17 +3,25 @@ require('./utils').setPrecision();
 const { OperatorToken } = require('./tokens');
 const { UnbalancedParentheses, InvalidExpression } = require('./errors');
 
+/**
+ * evaluate
+ *
+ * @param {Token[]} tokenizedInfixExpression
+ * @returns {Number}
+ */
 function evaluate(tokenizedInfixExpression) {
   const postfix = _convertToPostfix(tokenizedInfixExpression);
   return _evaluatePostfix(postfix);
 }
 
-function _hasGroupedOperator(ops) {
-  return (ops.length && ops[ops.length - 1].value !== '(');
-}
-
-// Based on https://en.wikipedia.org/wiki/Shunting-yard_algorithm
-// Limited to equal precedence operators (i.e., * and /)
+/**
+ * _convertToPostfix
+ * Based on https://en.wikipedia.org/wiki/Shunting-yard_algorithm
+ * Limited to equal precedence operators (i.e., * and /)
+ *
+ * @param {Token[]} tokens - Tokenized infix expression
+ * @returns {Token{}} - Tokenized postfix expression
+ */
 function _convertToPostfix(tokens) {
   const output = [];
   const operators = [];
@@ -51,6 +59,12 @@ function _convertToPostfix(tokens) {
   return output;
 }
 
+/**
+ * _evaluatePostfix
+ *
+ * @param {Token[]} - Tokenized postfix expression
+ * @returns {Number} - Value of evaluated expression
+ */
 function _evaluatePostfix(tokens) {
   const stack = [];
   tokens.forEach(token => {
@@ -64,6 +78,10 @@ function _evaluatePostfix(tokens) {
     throw new InvalidExpression();
   }
   return stack[0].value;
+}
+
+function _hasGroupedOperator(ops) {
+  return (ops.length && ops[ops.length - 1].value !== '(');
 }
 
 module.exports = evaluate;
