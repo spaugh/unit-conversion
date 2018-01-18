@@ -1,5 +1,5 @@
 const parse = require('./parse');
 const evaluate = require('./evaluate');
-const convert = require('./convert');
+const { convertToSI } = require('./convert');
 
-module.exports = { parse, evaluate, convert };
+module.exports = { parse, evaluate, convertToSI };
