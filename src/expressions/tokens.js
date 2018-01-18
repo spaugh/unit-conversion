@@ -17,6 +17,19 @@ class Token {
   }
 }
 
+class NumberToken extends Token {
+  constructor(string) {
+    super(string);
+    this.value = new Decimal(string);
+  }
+  toNumber() {
+    return this.value;
+  }
+  toString() {
+    return this.value.toString();
+  }
+}
+
 class OperatorToken extends Token {
   constructor(string) {
     super(string);
@@ -29,7 +42,11 @@ class OperatorToken extends Token {
     this._execute = execute;
   }
   execute(left, right) {
-    return this._execute(left.toNumber(), right.toNumber());
+    return new NumberToken(this._execute(left.toNumber(), right.toNumber()));
+  }
+  // A nicety for the shunting yard algorithm
+  executeReverse(right, left) {
+    return new NumberToken(this._execute(left.toNumber(), right.toNumber()));
   }
 }
 // NOTE: These values of precedence only matter in relative terms.
@@ -66,19 +83,6 @@ class UnitToken extends Token {
   }
   toString() {
     return this.value.symbol;
-  }
-}
-
-class NumberToken extends Token {
-  constructor(string) {
-    super(string);
-    this.value = new Decimal(string);
-  }
-  toNumber() {
-    return this.value;
-  }
-  toString() {
-    return this.value.toString();
   }
 }
 

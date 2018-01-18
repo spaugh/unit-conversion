@@ -8,20 +8,18 @@ const { OperatorToken, UnitToken } = require('./tokens');
 
 function _convertTokenToSI(token) {
   let newTokens = [];
-  for (let unit of token.value.baseUnits) {
-    if (newTokens.length) {
-      newTokens.push(new OperatorToken('*'));
-    }
+  token.value.baseUnits.forEach(unit => {
     newTokens.push(new UnitToken(unit.symbol));
-  }
-  return newTokens;
+    newTokens.push(new OperatorToken('*'));
+  });
+  return newTokens.slice(0, -1);
 }
 
 function convertToSI(expression) {
   const tokens = parse(expression);
   const conversionFactor = evaluate(tokens); 
   expression = tokens.map(token => {
-    if (token instanceof UnitToken && token.value instanceof ApprovedUnit) {
+    if (token.value instanceof ApprovedUnit) {
       return _convertTokenToSI(token);
     } else {
       return token;

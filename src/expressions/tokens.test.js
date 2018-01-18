@@ -17,11 +17,11 @@ test('instantiation and stringification for all token types', () => {
   
   expect(multiply).toBeInstanceOf(TokenTypes.OperatorToken);
   expect(multiply.toString()).toBe('*');
-  expect(multiply.execute(two, three).toPrecision(1)).toBe('6');
+  expect(multiply.execute(two, three).value.toPrecision(1)).toBe('6');
   
   expect(divide).toBeInstanceOf(TokenTypes.OperatorToken);
   expect(divide.toString()).toBe('/');
-  expect(divide.execute(two, three).toPrecision(1)).toBe('0.7');
+  expect(divide.execute(two, three).value.toPrecision(1)).toBe('0.7');
 
   expect(arcsecond).toBeInstanceOf(TokenTypes.UnitToken);
   expect(arcsecond.toString()).toBe('″');

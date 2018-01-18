@@ -1,6 +1,6 @@
 require('./utils').setPrecision();
 
-const TokenTypes = require('./tokens');
+const { NumberToken, OperatorToken } = require('./tokens');
 const { UnbalancedParentheses, InvalidExpression } = require('./errors');
 
 function evaluate(tokenizedInfixExpression) {
@@ -51,18 +51,15 @@ function _convertToPostfix(tokens) {
   return output;
 }
 
-// Limited to * and / operators
-function _evaluatePostfix(tokenizedPostfixExpression) {
+function _evaluatePostfix(tokens) {
   let stack = [];
-  let temp;
-  for (let token of tokenizedPostfixExpression) {
-    if (token instanceof TokenTypes.OperatorToken) {
-      temp = stack.pop();
-      stack.push(new TokenTypes.NumberToken(token.execute(stack.pop(), temp)));
+  tokens.forEach(token => {
+    if (token instanceof OperatorToken) {
+      stack.push(token.executeReverse(stack.pop(), stack.pop()))
     } else {
-      stack.push(token);
+      stack.push(token)
     }
-  }
+  });
   if (stack.length !== 1) {
     throw new InvalidExpression();
   }
