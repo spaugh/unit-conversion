@@ -33,20 +33,20 @@ class NumberToken extends Token {
 class OperatorToken extends Token {
   constructor(string) {
     super(string);
-    const { precedence, associativity, execute } = OperatorToken.types[string];
+    const { precedence, associativity, evaluate } = OperatorToken.types[string];
     if (precedence === undefined) {
       throw new UnsupportedOperator(string);
     }
     this.precedence = precedence;
     this.associativity = associativity;
-    this._execute = execute;
+    this._evaluate = evaluate;
   }
-  execute(left, right) {
-    return new NumberToken(this._execute(left.toNumber(), right.toNumber()));
+  evaluate(left, right) {
+    return new NumberToken(this._evaluate(left.toNumber(), right.toNumber()));
   }
   // A nicety for the shunting yard algorithm
-  executeReverse(right, left) {
-    return new NumberToken(this._execute(left.toNumber(), right.toNumber()));
+  evaluateReverse(right, left) {
+    return new NumberToken(this._evaluate(left.toNumber(), right.toNumber()));
   }
 }
 // NOTE: These values of precedence only matter in relative terms.
@@ -55,8 +55,8 @@ class OperatorToken extends Token {
 // unused, but provided with the intention of making this codebase
 // easily extensible.
 OperatorToken.types = {
-  '*': { precedence: 3, associativity: 'left', execute: (left, right) => left.times(right) },
-  '/': { precedence: 3, associativity: 'left', execute: (left, right) => left.dividedBy(right) },
+  '*': { precedence: 3, associativity: 'left', evaluate: (left, right) => left.times(right) },
+  '/': { precedence: 3, associativity: 'left', evaluate: (left, right) => left.dividedBy(right) },
 };
 
 class LeftBracketToken extends Token {

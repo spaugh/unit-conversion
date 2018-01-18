@@ -55,7 +55,7 @@ function _evaluatePostfix(tokens) {
   const stack = [];
   tokens.forEach(token => {
     if (token instanceof OperatorToken) {
-      stack.push(token.executeReverse(stack.pop(), stack.pop()));
+      stack.push(token.evaluateReverse(stack.pop(), stack.pop()));
     } else {
       stack.push(token);
     }
