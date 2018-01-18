@@ -54,7 +54,9 @@ const router = new Router();
 
 router.get('/units/si', convert);
 
-app.use(Logger());
+if (process.env.NODE_ENV !== 'test') {
+  app.use(Logger());
+}
 app.use(setHeaders);
 app.use(handleErrors);
 app.use(router.routes());

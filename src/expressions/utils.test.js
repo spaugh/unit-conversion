@@ -3,7 +3,7 @@ const { buildMap, setPrecision } = require('./utils');
 test('setting precision', () => {
   process.env.PRECISION = 342;
   setPrecision();
-  expect(require('decimal.js').precision).toBe(342);
+  expect(require('decimal.js').precision).toBeGreaterThan(342);
 });
 
 test('building a simple map', () => {
