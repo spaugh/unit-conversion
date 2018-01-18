@@ -12,7 +12,7 @@ class Unit {
     this.conversionFactor = new Decimal(1.0); 
 
     this.spellings = new Set();
-    for (let spelling of alternativeSpellings.concat([ name, symbol ])) {
+    for (const spelling of alternativeSpellings.concat([ name, symbol ])) {
       if (WORD_REGEX.test(spelling)) {
         this.spellings.add(spelling + 's');
       }

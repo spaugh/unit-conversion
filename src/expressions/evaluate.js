@@ -15,8 +15,8 @@ function _hasGroupedOperator(ops) {
 // Based on https://en.wikipedia.org/wiki/Shunting-yard_algorithm
 // Limited to equal precedence operators (i.e., * and /)
 function _convertToPostfix(tokens) {
-  let output = [];
-  let operators = [];
+  const output = [];
+  const operators = [];
   tokens.forEach(token => {
     switch (token.value) {
     case '(':
@@ -52,7 +52,7 @@ function _convertToPostfix(tokens) {
 }
 
 function _evaluatePostfix(tokens) {
-  let stack = [];
+  const stack = [];
   tokens.forEach(token => {
     if (token instanceof OperatorToken) {
       stack.push(token.executeReverse(stack.pop(), stack.pop()));

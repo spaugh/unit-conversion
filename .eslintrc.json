@@ -18,6 +18,27 @@
         "semi": [
             "error",
             "always"
+        ],
+        "prefer-const": [
+            "error",
+            {
+                "destructuring": "any",
+                "ignoreReadBeforeAssign": false
+            }
+        ],
+        "no-var": [ "error" ],
+        "object-shorthand": ["error", "always"],
+        "prefer-destructuring": [
+            "error",
+            { "array": true, "object": true },
+            { "enforceForRenamedProperties": false }
+        ],
+        "max-len": [
+            "error",
+            {
+                "code": 100,
+                "comments": 140
+            }
         ]
     },
     "parserOptions": {

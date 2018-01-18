@@ -37,7 +37,7 @@ test('parse complex expression', () => {
   const expression = expectedTypes.map(k => k[0]).join('');
   const tokens = parse(expression);
   expect(tokens).toHaveLength(expectedTypes.length);
-  for (let [index, token] of tokens.entries()) {
+  for (const [index, token] of tokens.entries()) {
     expect(token).toBeInstanceOf(expectedTypes[index][1]);
   }
   expect(tokens.join('')).toEqual(expression);

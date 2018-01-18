@@ -2,9 +2,9 @@ const Decimal = require('decimal.js');
 const { PrecisionError } = require('./errors');
 
 function buildMap(list, keyFn) {
-  let newMap = new Map();
-  for (let item of list) {
-    let key = keyFn(item);
+  const newMap = new Map();
+  for (const item of list) {
+    const key = keyFn(item);
     if (Array.isArray(key)) {
       key.map(k => newMap.set(k, item));
     } else {
@@ -15,11 +15,11 @@ function buildMap(list, keyFn) {
 }
 
 function setPrecision() {
-  let precision = parseInt(process.env.MAX_PRECISION || Decimal.precision);
+  const precision = parseInt(process.env.MAX_PRECISION || Decimal.precision);
   if (precision <= 1000) {
     Decimal.set({ precision });
   } else {
-    throw new PrecisionError('Precision is limited to 1000 significant figures due to precision of Pi');
+    throw new PrecisionError('Precision limited to 1000 sigfigs due to precision of Pi');
   }
 }
 

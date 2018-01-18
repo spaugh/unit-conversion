@@ -7,7 +7,7 @@ const { ApprovedUnit } = require('./units');
 const { OperatorToken, UnitToken } = require('./tokens');
 
 function _convertTokenToSI(token) {
-  let newTokens = [];
+  const newTokens = [];
   token.value.baseUnits.forEach(unit => {
     newTokens.push(new UnitToken(unit.symbol));
     newTokens.push(new OperatorToken('*'));

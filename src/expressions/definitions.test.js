@@ -1,18 +1,18 @@
 const { BASE_UNITS, unitDefinitions } = require('./definitions');
 
 test('all unit conversion factors', () => {
-  for (let unit of BASE_UNITS) {
+  for (const unit of BASE_UNITS) {
     expect(unit.conversionFactor.toPrecision(3)).toBe('1.00');
   }
-  let minute = unitDefinitions.get('minute');
-  let hour = unitDefinitions.get('hour');
-  let day = unitDefinitions.get('day');
-  let litre = unitDefinitions.get('litre');
-  let hectare = unitDefinitions.get('hectare');
-  let tonne = unitDefinitions.get('tonne');
-  let degree = unitDefinitions.get('degree');
-  let arcminute = unitDefinitions.get('arcminute');
-  let arcsecond = unitDefinitions.get('arcsecond');
+  const minute = unitDefinitions.get('minute');
+  const hour = unitDefinitions.get('hour');
+  const day = unitDefinitions.get('day');
+  const litre = unitDefinitions.get('litre');
+  const hectare = unitDefinitions.get('hectare');
+  const tonne = unitDefinitions.get('tonne');
+  const degree = unitDefinitions.get('degree');
+  const arcminute = unitDefinitions.get('arcminute');
+  const arcsecond = unitDefinitions.get('arcsecond');
   expect(minute.conversionFactor.toPrecision(20)).toBe('60.000000000000000000');
   expect(hour.conversionFactor.toPrecision(20)).toBe('3600.0000000000000000');
   expect(day.conversionFactor.toPrecision(20)).toBe('86400.000000000000000');
@@ -25,6 +25,6 @@ test('all unit conversion factors', () => {
 });
 
 test('"second" refers to arcsecond, rather than time', () => {
-  let arcsecond = unitDefinitions.get('second');
+  const arcsecond = unitDefinitions.get('second');
   expect(arcsecond.symbol).toBe('″');
 });

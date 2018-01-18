@@ -1,4 +1,4 @@
-var ExtendableError = require('es6-error');
+const ExtendableError = require('es6-error');
 
 class PrecisionError extends ExtendableError {
   constructor(message = 'Precision error!') {

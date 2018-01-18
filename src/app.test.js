@@ -50,13 +50,13 @@ test('unbalanced parentheses', async () => {
 });
 
 test('precision for simple conversion', async () => {
-  let response = await request(server).get('/units/si?units=degree/minute');
+  const response = await request(server).get('/units/si?units=degree/minute');
   expect(response.body.multiplication_factor).not.toBeInstanceOf(String);
   expect(response.body.multiplication_factor.toString()).toBe('0.00029088820866572');
 });
 
 test('precision for complex conversion', async () => {
-  let response = await request(server).get('/units/si?units=((tonnes)/(litre*day))');
+  const response = await request(server).get('/units/si?units=((tonnes)/(litre*day))');
   expect(response.body.multiplication_factor).not.toBeInstanceOf(String);
   expect(response.body.multiplication_factor.toString()).toBe('11.574074074074');
 });
@@ -64,10 +64,10 @@ test('precision for complex conversion', async () => {
 test('many requests', async () => {
   const responses = [];
   [...Array(500)].forEach(async () => {
-    let response = await request(server).get('/units/si?units=degree/minute');
+    const response = await request(server).get('/units/si?units=degree/minute');
     responses.push(response);
   });
-  for (let response of responses) {
+  for (const response of responses) {
     expect(response.status).toEqual(200);
   }
 });
