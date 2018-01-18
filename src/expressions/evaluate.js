@@ -8,42 +8,46 @@ function evaluate(tokenizedInfixExpression) {
   return _evaluatePostfix(postfix);
 }
 
-const _stackContainsValidOperators = (stack) => {
-  return stack.length && !(stack[stack.length - 1] instanceof TokenTypes.LeftBracketToken);
+function _hasGroupedOperator(ops) {
+  return (ops.length && ops[ops.length - 1].value !== '(');
 }
 
 // Based on https://en.wikipedia.org/wiki/Shunting-yard_algorithm
 // Limited to equal precedence operators (i.e., * and /)
-function _convertToPostfix(tokenizedInfixExpression) {
+function _convertToPostfix(tokens) {
   let output = [];
-  let operatorStack = [];
-  for (let token of tokenizedInfixExpression) {
-    if (token instanceof TokenTypes.LeftBracketToken) {
-      operatorStack.push(token);
-    } else if (token instanceof TokenTypes.RightBracketToken) {
-      while (_stackContainsValidOperators(operatorStack)) {
-        output.push(operatorStack.pop());
-      }
-      let removed = operatorStack.pop();
-      if (!(removed instanceof TokenTypes.LeftBracketToken)) {
-        throw new UnbalancedParentheses();
-      }
-    } else if (token instanceof TokenTypes.OperatorToken) {
-      while (_stackContainsValidOperators(operatorStack)) {
-        output.push(operatorStack.pop());
-      }
-      operatorStack.push(token);
-    } else {
-      output.push(token);
+  let operators = [];
+  tokens.forEach(token => {
+    switch (token.value) {
+      case '(': 
+        operators.push(token); 
+        break;
+      case ')':
+        while (_hasGroupedOperator(operators)) {
+          output.push(operators.pop());
+        }
+        if (!operators.length || operators.pop().value !== '(') {
+          throw new UnbalancedParentheses();
+        }
+        break;
+      case '*':
+      case '/':
+        while (_hasGroupedOperator(operators)) {
+          output.push(operators.pop());
+        }
+        operators.push(token);
+        break;
+      default:
+        output.push(token);
+        break;
     }
-  }
-  while (operatorStack.length) {
-    let operator = operatorStack.pop();
-    if (operator instanceof TokenTypes.LeftBracketToken || operator instanceof TokenTypes.RightBracketToken) {
+  });
+  operators.forEach(op => {
+    if (op.value == '(' || op.value == ')') {
       throw new UnbalancedParentheses();
     }
-    output.push(operator);
-  }
+    output.push(op);
+  });
   return output;
 }
 

@@ -7,6 +7,12 @@ test('Evaluate simple expression', () => {
   expect(parseInt(value)).toBe(6);
 });
 
+test('Evaluate simple expression with parens', () => {
+  const tokens = parse('(2 * 3)');
+  const value = evaluate(tokens);
+  expect(parseInt(value)).toBe(6);
+});
+
 test('Evaluate complex expression', () => {
   const tokens = parse('(3 * 4 / 2)/((2/3) * 3.5 / (3.0))');
   const value = evaluate(tokens);
