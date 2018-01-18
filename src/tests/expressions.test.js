@@ -1,6 +1,6 @@
-const { tokenize, evaluateTokenizedExpression } = require('./expressions');
+const { tokenize, evaluateTokenizedExpression } = require('../expressions');
 
-const { LeftBracketToken, RightBracketToken, OperatorToken, NumberToken, UnitToken } = require('./token');
+const { LeftBracketToken, RightBracketToken, OperatorToken, NumberToken, UnitToken } = require('../expressions/token');
 
 test('tokenize simple expression', () => {
   const tokens = tokenize('1 * 2');
@@ -95,7 +95,6 @@ test('Evaluate complex unit expression', () => {
   const tokens = tokenize('(tonnes)/(litre*day)');
   const conversionFactor = evaluateTokenizedExpression(tokens).toPrecision(14);
   const newExpression = tokens.map(token => token.asString()).join('');
-  console.log(newExpression);
   expect(conversionFactor).toBe('11.574074074074');
   expect(newExpression).toBe('(kg)/(m*m*m*s)'); // Is this the right behavior?
 });

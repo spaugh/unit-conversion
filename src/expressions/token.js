@@ -55,7 +55,7 @@ class UnitToken extends Token {
     }
   }
   asNumber() {
-    return new Decimal(this.value.conversionFactor);
+    return this.value.conversionFactor;
   }
   asString() {
     return this.value.asBaseUnitString();
