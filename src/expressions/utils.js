@@ -15,7 +15,7 @@ function buildMap(list, keyFn) {
 }
 
 function setPrecision() {
-  const precision = parseInt(process.env.MAX_PRECISION || Decimal.precision);
+  const precision = parseInt(process.env.PRECISION || Decimal.precision);
   if (precision <= 1000) {
     Decimal.set({ precision });
   } else {

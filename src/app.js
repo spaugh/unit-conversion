@@ -4,8 +4,16 @@ const Logger = require('koa-logger');
 
 const { convertToSI, errors } = require('./expressions');
 
-const app = new Koa();
-const router = new Router();
+const MAX_FLOAT_PRECISION = 15;
+
+const formatNumber = (number) => {
+  const precision = parseInt(process.env.PRECISION || 20);
+  if (precision > MAX_FLOAT_PRECISION) {
+    return number.toPrecision(precision);
+  } else {
+    return parseFloat(number.toPrecision(precision));
+  }
+};
 
 async function setHeaders(ctx, next) {
   await next();
@@ -26,17 +34,21 @@ async function handleErrors(ctx, next) {
 }
 
 async function convert(ctx) {
-  if (!!ctx.query.units) {
+  if (ctx.query.units) {
     const { expression, conversionFactor } = convertToSI(ctx.query.units);
     ctx.body = JSON.stringify({
       unit_name: expression,
-      multiplication_factor: parseFloat(conversionFactor.toPrecision(14)),
+      multiplication_factor: formatNumber(conversionFactor),
     });
   } else {
     ctx.status = 400;
     ctx.body = JSON.stringify({ error: 'Must provide units query string!' });
   }
 }
+
+
+const app = new Koa();
+const router = new Router();
 
 router.get('/units/si', convert);
 
@@ -46,6 +58,9 @@ app.use(handleErrors);
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-const server = app.listen(process.env.PORT || 3000);
+
+const server = app.listen(process.env.PORT || 3000, () => {
+  console.log('Listening on port', server.address().port); // eslint-disable-line no-console
+});
 
 module.exports = { app, server };

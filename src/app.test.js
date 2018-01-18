@@ -1,7 +1,16 @@
 const request = require('supertest');
 const { server } = require('./app');
 
-afterEach(() => server.close());
+const OLD_PRECISION = process.env.PRECISION;
+const TEST_PRECISION = 14;
+
+beforeEach(() => {
+  process.env.PRECISION = TEST_PRECISION;
+});
+afterEach(() => {
+  process.env.PRECISION = OLD_PRECISION;
+  server.close();
+});
 
 test('unit conversion route', async () => {
   const response = await request(server).get('/units/si?units=degree/minute');
@@ -17,7 +26,6 @@ test('missing unit query string', async () => {
   const response = await request(server).get('/units/si');
   expect(response.status).toEqual(400);
   expect(response.type).toEqual('application/json');
-  console.log(response.body);
   expect(response.body).toEqual({
     error: expect.stringMatching(new RegExp('provide units query string', 'i'))
   });
@@ -27,7 +35,6 @@ test('nonsense in query string', async () => {
   const response = await request(server).get('/units/si?units=klnlk2*(&*(2lsdkl228883jjjnJJJJFF^^');
   expect(response.status).toEqual(400);
   expect(response.type).toEqual('application/json');
-  console.log(response.body);
   expect(response.body).toEqual({
     error: expect.stringMatching(new RegExp('unsupported unit', 'i'))
   });
@@ -37,7 +44,6 @@ test('misspelled query string', async () => {
   const response = await request(server).get('/units/si?untsi=meters/s');
   expect(response.status).toEqual(400);
   expect(response.type).toEqual('application/json');
-  console.log(response.body);
   expect(response.body).toEqual({
     error: expect.stringMatching(new RegExp('provide units query string', 'i'))
   });
@@ -103,7 +109,7 @@ test('many requests', async () => {
     Promise.all([...Array(count)].map(async () => {
       return await request(server).get('/units/si?units=degree/minute');
     }))
-  ])
+  ]);
   expect(responses).toHaveLength(count);
   for (const response of responses) {
     expect(response.status).toBe(200);

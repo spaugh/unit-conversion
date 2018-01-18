@@ -14,8 +14,8 @@
     "koa-router": "^7.3.0"
   },
   "scripts": {
-    "start": "MAX_PRECISION=40 node src/app.js",
-    "test": "MAX_PRECISION=40 jest",
+    "start": "node src/app.js",
+    "test": "PRECISION=40 jest",
     "lint": "./node_modules/.bin/eslint src/**"
   },
   "devDependencies": {
