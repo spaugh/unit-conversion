@@ -1,17 +1,21 @@
 ## Installation
 
 #### Installation with Docker (recommended):
-```
+```bash
 $ cd citrine-frontend-challenge
 $ docker build -t arm-citrine .
 $ docker run -p 8080:8080 -it arm-citrine
+$ curl -w '\n' 'localhost:8080/units/si?units=((tonnes)/(litre*day))'
+{"unit_name":"((kg)/(m*m*m*s))","multiplication_factor":11.574074074074}
 ```
 
 #### Installation without Docker:
-```
+```bash
 $ cd citrine-frontend-challenge
 $ yarn install
 $ PORT=8080 PRECISION=14 yarn start
+$ curl -w '\n' 'localhost:8080/units/si?units=((tonnes)/(litre*day))'
+{"unit_name":"((kg)/(m*m*m*s))","multiplication_factor":11.574074074074}
 ```
 
 ###### A note about `PRECISION`: This environment variable is passed to the node app and dictates the precision of returned `multiplication_factor` parameters. This value of this environment variable is limited to 1000, due to the number of digits of Pi stored. However, because JavaScript precision limit for floats is 15 digits, precisions of 16 or higher will change the API response such that `multiplication_factor` is returned as a string.
@@ -58,3 +62,11 @@ The library chosen, Koa, comes as a rewrite of the extremely popular express pac
 #### Testing
 
 Jest was used. For the API server, supertest was used.
+
+## Next Steps
+
+- Add operator types
+- Improve Token and Unit class implementations
+- Add more units
+- Extend conversion abilities
+- Add expression simplification
