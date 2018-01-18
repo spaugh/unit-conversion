@@ -25,5 +25,5 @@ test('instantiation and stringification for all token types', () => {
 
   expect(arcsecond).toBeInstanceOf(TokenTypes.UnitToken);
   expect(arcsecond.toString()).toBe('″');
-  expect(arcsecond.toNumber().toPrecision(28)).toBe('0.000004848136811095359935899141024');
+  expect(arcsecond.toNumber().toPrecision(5)).toBe('0.0000048481');
 });

@@ -1,4 +1,7 @@
+require('./utils').setPrecision();
+
 const TokenTypes = require('./tokens');
+const { UnbalancedParentheses } = require('./errors');
 
 function evaluate(tokenizedInfixExpression) {
   const postfix = _convertToPostfix(tokenizedInfixExpression);
@@ -23,7 +26,7 @@ function _convertToPostfix(tokenizedInfixExpression) {
       }
       let removed = operatorStack.pop();
       if (!(removed instanceof TokenTypes.LeftBracketToken)) {
-        throw new Error('Unbalanced parentheses!');
+        throw new UnbalancedParentheses();
       }
     } else if (token instanceof TokenTypes.OperatorToken) {
       while (_stackContainsValidOperators(operatorStack)) {
@@ -37,7 +40,7 @@ function _convertToPostfix(tokenizedInfixExpression) {
   while (operatorStack.length) {
     let operator = operatorStack.pop();
     if (operator instanceof TokenTypes.LeftBracketToken || operator instanceof TokenTypes.RightBracketToken) {
-      throw new Error('Unbalanced parentheses!');
+      throw new UnbalancedParentheses();
     }
     output.push(operator);
   }

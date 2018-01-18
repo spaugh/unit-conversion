@@ -14,11 +14,6 @@ async function responseTime(ctx, next) {
   ctx.set('X-Response-Time', `${ms}ms`);
 }
 
-
-const setHeaders = (ctx, next) => {
-  ctx.set('X-Response-Time', `${ms}ms`);
-}
-
 router.get('/units/si', (ctx, next) => { 
   let { expression, conversionFactor } = convertToSI(ctx.query.units);
   ctx.body = JSON.stringify({
@@ -27,8 +22,6 @@ router.get('/units/si', (ctx, next) => {
   });
   ctx.set('Content-Type', 'application/json');
 })
-
-
 
 app
   .use(Logger())

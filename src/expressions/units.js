@@ -1,3 +1,5 @@
+require('./utils').setPrecision();
+
 const Decimal = require('decimal.js');
 
 WORD_REGEX = /[a-zA-Z]+[^s]/;

@@ -1,5 +1,8 @@
+require('./utils').setPrecision();
+
 const Decimal = require('decimal.js');
 
+const { UnsupportedOperator, UnsupportedUnit } = require('./errors');
 const { unitDefinitions } = require('./definitions');
 
 class Token {
@@ -19,7 +22,7 @@ class OperatorToken extends Token {
     super(string);
     const { precedence, associativity, execute } = OperatorToken.types[string];
     if (precedence === undefined) {
-      throw new Error(`Unknown operator ${string}!`);
+      throw new UnsupportedOperator(string);
     }
     this.precedence = precedence;
     this.associativity = associativity;
@@ -55,7 +58,7 @@ class UnitToken extends Token {
     super(string);
     this.value = unitDefinitions.get(string);
     if (this.value === undefined) {
-      throw new Error(`Unknown unit type ${string}`);
+      throw new UnsupportedUnit(string);
     }
   }
   toNumber() {

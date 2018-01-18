@@ -1,13 +1,10 @@
-const Decimal = require('decimal.js');
+require('./utils').setPrecision();
 
-const PRECISION = parseInt(process.env.MAX_PRECISION || 40);
-if (PRECISION > 1000) {
-  throw new Error('Precision can not exceed 1000 without improving precision of Pi!');
-}
-Decimal.set({ precision: PRECISION })
+const Decimal = require('decimal.js');
 
 const { BaseUnit, ApprovedUnit } = require('./units');
 const { buildMap } = require('./utils');
+const { PrecisionError } = require('./errors');
 
 const Pi = Decimal.acos(-1); // Allows precision up to 1000 digits
 

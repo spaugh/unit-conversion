@@ -1,4 +1,5 @@
 const TokenTypes = require('./tokens');
+const { UnsupportedOperator } = require('./errors');
 
 // No named RegExp capture groups in JavaScript...*sigh*
 const TOKEN_REGEX = /(\()|(\))|(\*)|(\/)|(\+)|(-)|(\^)|(\d+(?:\.\d+)?)|([^\(\)\*\/\s]+)/g
@@ -16,7 +17,7 @@ function parse(expression) {
     } else if (index <= 3) {
       tokens.push(new TokenTypes.OperatorToken(match[index + 1]));
     } else if (index <= 6) {
-      throw new Error(`"${match[index + 1]}" operator not supported!`);
+      throw new UnsupportedOperator(match[index + 1]);
     } else if (index === 7) {
       tokens.push(new TokenTypes.NumberToken(match[index + 1]));
     } else {

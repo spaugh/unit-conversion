@@ -1,3 +1,5 @@
+require('./utils').setPrecision();
+
 const parse = require('./parse');
 const evaluate = require('./evaluate');
 
