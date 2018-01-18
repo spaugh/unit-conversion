@@ -13,3 +13,12 @@ test('unit conversion route', async () => {
   });
 })
 
+test('invalid unit', async () => {
+  const response = await request(server).get('/units/si?units=gloop/minute');
+  expect(response.status).toEqual(400)
+  expect(response.type).toEqual('application/json')
+  expect(response.body).toEqual({
+    error: expect.stringMatching(new RegExp('unsupported unit', 'i'))
+  });
+})
+
