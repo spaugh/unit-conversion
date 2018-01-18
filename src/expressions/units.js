@@ -2,7 +2,7 @@ require('./utils').setPrecision();
 
 const Decimal = require('decimal.js');
 
-WORD_REGEX = /[a-zA-Z]+[^s]/;
+const WORD_REGEX = /[a-zA-Z]+[^s]/;
 
 class Unit {
   constructor(name, symbol, quantity, alternativeSpellings = []) {
@@ -35,4 +35,4 @@ class ApprovedUnit extends Unit {
   }
 }
 
-module.exports = { BaseUnit, ApprovedUnit }
+module.exports = { BaseUnit, ApprovedUnit };

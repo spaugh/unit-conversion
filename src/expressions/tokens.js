@@ -57,7 +57,7 @@ class OperatorToken extends Token {
 OperatorToken.types = {
   '*': { precedence: 3, associativity: 'left', execute: (left, right) => left.times(right) },
   '/': { precedence: 3, associativity: 'left', execute: (left, right) => left.dividedBy(right) },
-}
+};
 
 class LeftBracketToken extends Token {
   constructor() {
@@ -86,4 +86,4 @@ class UnitToken extends Token {
   }
 }
 
-module.exports = { LeftBracketToken, RightBracketToken, OperatorToken, UnitToken, NumberToken }
+module.exports = { LeftBracketToken, RightBracketToken, OperatorToken, UnitToken, NumberToken };

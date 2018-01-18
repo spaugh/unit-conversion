@@ -16,7 +16,7 @@ async function handleErrors(ctx, next) {
   try {
     await next();
   } catch (err) {
-    const userError = (err instanceof errors.ExtendableError)
+    const userError = (err instanceof errors.ExtendableError);
     ctx.status = userError ? 400 : 500;
     ctx.body = JSON.stringify({ error: userError ? err.message : 'Internal Server Error' });
     if (!userError) {

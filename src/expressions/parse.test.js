@@ -33,7 +33,7 @@ test('parse complex expression', () => {
     [2,   TokenTypes.NumberToken],
     [')', TokenTypes.RightBracketToken],
     [')', TokenTypes.RightBracketToken],
-  ]
+  ];
   const expression = expectedTypes.map(k => k[0]).join('');
   const tokens = parse(expression);
   expect(tokens).toHaveLength(expectedTypes.length);

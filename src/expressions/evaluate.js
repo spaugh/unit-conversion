@@ -1,6 +1,6 @@
 require('./utils').setPrecision();
 
-const { NumberToken, OperatorToken } = require('./tokens');
+const { OperatorToken } = require('./tokens');
 const { UnbalancedParentheses, InvalidExpression } = require('./errors');
 
 function evaluate(tokenizedInfixExpression) {
@@ -19,27 +19,27 @@ function _convertToPostfix(tokens) {
   let operators = [];
   tokens.forEach(token => {
     switch (token.value) {
-      case '(': 
-        operators.push(token); 
-        break;
-      case ')':
-        while (_hasGroupedOperator(operators)) {
-          output.push(operators.pop());
-        }
-        if (!operators.length || operators.pop().value !== '(') {
-          throw new UnbalancedParentheses();
-        }
-        break;
-      case '*':
-      case '/':
-        while (_hasGroupedOperator(operators)) {
-          output.push(operators.pop());
-        }
-        operators.push(token);
-        break;
-      default:
-        output.push(token);
-        break;
+    case '(':
+      operators.push(token);
+      break;
+    case ')':
+      while (_hasGroupedOperator(operators)) {
+        output.push(operators.pop());
+      }
+      if (!operators.length || operators.pop().value !== '(') {
+        throw new UnbalancedParentheses();
+      }
+      break;
+    case '*':
+    case '/':
+      while (_hasGroupedOperator(operators)) {
+        output.push(operators.pop());
+      }
+      operators.push(token);
+      break;
+    default:
+      output.push(token);
+      break;
     }
   });
   operators.forEach(op => {
@@ -55,9 +55,9 @@ function _evaluatePostfix(tokens) {
   let stack = [];
   tokens.forEach(token => {
     if (token instanceof OperatorToken) {
-      stack.push(token.executeReverse(stack.pop(), stack.pop()))
+      stack.push(token.executeReverse(stack.pop(), stack.pop()));
     } else {
-      stack.push(token)
+      stack.push(token);
     }
   });
   if (stack.length !== 1) {

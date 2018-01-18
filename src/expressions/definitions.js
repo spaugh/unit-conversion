@@ -4,7 +4,6 @@ const Decimal = require('decimal.js');
 
 const { BaseUnit, ApprovedUnit } = require('./units');
 const { buildMap } = require('./utils');
-const { PrecisionError } = require('./errors');
 
 const Pi = Decimal.acos(-1); // Allows precision up to 1000 digits
 
@@ -31,8 +30,8 @@ const APPROVED_UNITS = [
   new ApprovedUnit('arcminute', '′', 'angle', Pi.dividedBy(new Decimal(10800)), [ radian ], ['\'', 'arcmin', 'amin']),
   // NOTE: The use of "second" to denote arcsecond is nonstandard, but it is used in accordance with the challenge prompt
   new ApprovedUnit('arcsecond', '″', 'angle', Pi.dividedBy(new Decimal(648000)), [ radian ], ['"', 'second', 'arcsec', 'asec']),
-]
+];
 
 const keyFn = (unit) => Array.from(unit.spellings);
 // We want approved units to override base units, especially for the arcsecond/second case
-module.exports = { APPROVED_UNITS, BASE_UNITS, unitDefinitions: buildMap(BASE_UNITS.concat(APPROVED_UNITS), keyFn) }
+module.exports = { APPROVED_UNITS, BASE_UNITS, unitDefinitions: buildMap(BASE_UNITS.concat(APPROVED_UNITS), keyFn) };

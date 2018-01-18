@@ -25,7 +25,7 @@ function convertToSI(expression) {
       return token;
     }
   }).reduce((all, token) => all.concat(Array.isArray(token) ? token : [token]), []).join('');
-  return { expression, conversionFactor }
+  return { expression, conversionFactor };
 }
 
-module.exports = { convertToSI }
+module.exports = { convertToSI };

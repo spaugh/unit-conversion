@@ -15,7 +15,7 @@ function buildMap(list, keyFn) {
 }
 
 function setPrecision() {
-  precision = parseInt(process.env.MAX_PRECISION || Decimal.precision);
+  let precision = parseInt(process.env.MAX_PRECISION || Decimal.precision);
   if (precision <= 1000) {
     Decimal.set({ precision });
   } else {
@@ -23,4 +23,4 @@ function setPrecision() {
   }
 }
 
-module.exports = { buildMap, setPrecision }
+module.exports = { buildMap, setPrecision };

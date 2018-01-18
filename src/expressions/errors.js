@@ -39,4 +39,4 @@ module.exports = {
   UnbalancedParentheses,
   UnsupportedOperator,
   UnsupportedUnit,
-}
+};

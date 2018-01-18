@@ -24,7 +24,7 @@ test('building a many to one map', () => {
     { name: 'Stephen', nicknames: ['steve', 'steven'], height: 70 },
     { name: 'Gary', nicknames: ['garebare'], height: 70 },
     { name: 'Alex', nicknames: ['AK'], height: 67 },
-  ]
+  ];
   const keyFn = person => person.nicknames.concat([ person.name ]);
   const map = buildMap(people, keyFn);
   expect(map.get('Andrew').name).toBe('Andrew');

@@ -2,7 +2,7 @@ const TokenTypes = require('./tokens');
 const { UnsupportedOperator } = require('./errors');
 
 // No named RegExp capture groups in JavaScript...*sigh*
-const TOKEN_REGEX = /(\()|(\))|(\*)|(\/)|(\+)|(-)|(\^)|(\d+(?:\.\d+)?)|([^\(\)\*\/\+-\^\s]+)/g
+const TOKEN_REGEX = /(\()|(\))|(\*)|(\/)|(\+)|(-)|(\^)|(\d+(?:\.\d+)?)|([^()*/+-^\s]+)/g;
 
 function parse(expression) {
   TOKEN_REGEX.lastIndex = 0; // Reset state of regex so that we don't have to reinstantiate

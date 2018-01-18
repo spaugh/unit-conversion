@@ -5,8 +5,8 @@ afterEach(() => server.close());
 
 test('unit conversion route', async () => {
   const response = await request(server).get('/units/si?units=degree/minute');
-  expect(response.status).toEqual(200)
-  expect(response.type).toEqual('application/json')
+  expect(response.status).toEqual(200);
+  expect(response.type).toEqual('application/json');
   expect(response.body).toEqual({
     unit_name: 'rad/s',
     multiplication_factor: 0.00029088820866572
@@ -15,8 +15,8 @@ test('unit conversion route', async () => {
 
 test('unsupported unit', async () => {
   const response = await request(server).get('/units/si?units=gloop/minute');
-  expect(response.status).toEqual(400)
-  expect(response.type).toEqual('application/json')
+  expect(response.status).toEqual(400);
+  expect(response.type).toEqual('application/json');
   expect(response.body).toEqual({
     error: expect.stringMatching(new RegExp('unsupported unit', 'i'))
   });
@@ -24,8 +24,8 @@ test('unsupported unit', async () => {
 
 test('unsupported operator', async () => {
   const response = await request(server).get('/units/si?units=hectare%2Bminute');
-  expect(response.status).toEqual(400)
-  expect(response.type).toEqual('application/json')
+  expect(response.status).toEqual(400);
+  expect(response.type).toEqual('application/json');
   expect(response.body).toEqual({
     error: expect.stringMatching(new RegExp('unsupported operator', 'i'))
   });
@@ -33,8 +33,8 @@ test('unsupported operator', async () => {
 
 test('invalid expression', async () => {
   const response = await request(server).get('/units/si?units=hectare%20minute');
-  expect(response.status).toEqual(400)
-  expect(response.type).toEqual('application/json')
+  expect(response.status).toEqual(400);
+  expect(response.type).toEqual('application/json');
   expect(response.body).toEqual({
     error: expect.stringMatching(new RegExp('invalid expression', 'i'))
   });
@@ -42,8 +42,8 @@ test('invalid expression', async () => {
 
 test('unbalanced parentheses', async () => {
   const response = await request(server).get('/units/si?units=(hectare/minute))');
-  expect(response.status).toEqual(400)
-  expect(response.type).toEqual('application/json')
+  expect(response.status).toEqual(400);
+  expect(response.type).toEqual('application/json');
   expect(response.body).toEqual({
     error: expect.stringMatching(new RegExp('unbalanced parentheses', 'i'))
   });

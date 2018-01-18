@@ -15,9 +15,11 @@
   },
   "scripts": {
     "start": "MAX_PRECISION=40 node src/app.js",
-    "test": "MAX_PRECISION=40 jest"
+    "test": "MAX_PRECISION=40 jest",
+    "lint": "./node_modules/.bin/eslint src/**"
   },
   "devDependencies": {
+    "eslint": "^4.15.0",
     "jest": "^22.1.2",
     "supertest": "^3.0.0"
   }
