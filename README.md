@@ -2,16 +2,16 @@
 
 #### Installation with Docker (recommended):
 ```bash
-$ cd citrine-frontend-challenge
-$ docker build -t arm-citrine .
-$ docker run -p 8080:8080 -it --rm arm-citrine
+$ cd unit-conversion 
+$ docker build -t unit-conversion .
+$ docker run -p 8080:8080 -it --rm unit-conversion
 $ curl -w '\n' 'localhost:8080/units/si?units=((tonnes)/(litre*day))' # in another bash session:
 {"unit_name":"((kg)/(m*m*m*s))","multiplication_factor":11.574074074074}
 ```
 
 #### Installation without Docker:
 ```bash
-$ cd citrine-frontend-challenge
+$ cd unit-conversion 
 $ yarn install
 $ PORT=8080 PRECISION=14 yarn start
 $ curl -w '\n' 'localhost:8080/units/si?units=((tonnes)/(litre*day))'
@@ -22,7 +22,7 @@ $ curl -w '\n' 'localhost:8080/units/si?units=((tonnes)/(litre*day))'
 
 #### Testing and linting:
 ```
-$ cd citrine-frontend-challenge
+$ cd unit-conversion 
 $ yarn test
 $ yarn lint
 ```

@@ -1,9 +1,9 @@
 {
-  "name": "citrine-frontend-challenge",
+  "name": "unit-conversion",
   "version": "0.0.1",
   "description": "Challenge question for Citrine Informatics frontend role",
   "main": "index.js",
-  "repository": "git@github.com:andrewmillspaugh/citrine-frontend-challenge.git",
+  "repository": "git@github.com:andrewmillspaugh/unit-conversion.git",
   "author": "Andrew Millspaugh <millspaugh.andrew@gmail.com>",
   "license": "MIT",
   "dependencies": {
