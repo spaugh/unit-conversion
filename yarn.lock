@@ -3117,8 +3117,8 @@ uid-number@^0.0.6:
   resolved "https://registry.yarnpkg.com/uid-number/-/uid-number-0.0.6.tgz#0ea10e8035e8eb5b8e4449f06da1c730663baa81"
 
 urijs@^1.19.0:
-  version "1.19.0"
-  resolved "https://registry.yarnpkg.com/urijs/-/urijs-1.19.0.tgz#d8aa284d0e7469703a6988ad045c4cbfdf08ada0"
+  version "1.19.7"
+  resolved "https://registry.yarnpkg.com/urijs/-/urijs-1.19.7.tgz#4f594e59113928fea63c00ce688fb395b1168ab9"
 
 util-deprecate@~1.0.1:
   version "1.0.2"
